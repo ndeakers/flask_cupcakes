@@ -64,3 +64,47 @@ def create_cupcake():
 
     # Return w/status code 201 --- return tuple (json, status)
     return (jsonify(cupcake=serialized), 201)
+
+@app.route('/api/cupcakes/<int:cupcake_id>', methods=["PATCH"])
+def update_cupcake(cupcake_id):
+    """update cupcake details
+    Input should be {
+  "cupcake": {
+    "flavor": "strawberry",
+    "id": 1,
+    "image": "http://test.com/cupcake.jpg",
+    "rating": 5,
+    "size": "TestSize"
+  }
+}
+    Respond with JSON of the newly-updated cupcake, like this: 
+    {cupcake: {id, flavor, size, rating, image}}
+    """
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+    print(cupcake.flavor)
+    print('response', request.json)
+
+    current_cupcake = request.json['cupcake']
+
+    cupcake.flavor = current_cupcake["flavor"]
+    cupcake.size = current_cupcake["size"]
+    cupcake.rating = current_cupcake["rating"]
+    cupcake.image = current_cupcake["image"]
+
+    db.session.commit()
+
+    serialized = cupcake.serialize()
+    return (jsonify(cupcake=serialized), 200)
+
+
+@app.route('/api/cupcakes/<int:cupcake_id>', methods=["DELETE"])
+def delete_cupcake(cupcake_id):
+    """ Delete cupcake 
+    Delete cupcake with the id passed in the URL.
+    Respond with JSON like {message: "Deleted"}
+    """
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+
+    db.session.delete(cupcake)
+    db.session.commit()
+    return jsonify({"message": "Deleted"})
