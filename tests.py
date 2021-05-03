@@ -37,11 +37,13 @@ class CupcakeViewsTestCase(TestCase):
         Cupcake.query.delete()
 
         # "**" means "pass this dictionary as individual named params"
+        #like spread!
         cupcake = Cupcake(**CUPCAKE_DATA)
         db.session.add(cupcake)
         db.session.commit()
 
         self.cupcake = cupcake
+        #self.cupcake_id = cupcake.id
 
     def tearDown(self):
         """Clean up fouled transactions."""
