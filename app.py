@@ -12,6 +12,14 @@ app.config['SQLALCHEMY_ECHO'] = True
 connect_db(app)
 db.create_all()
 
+
+@app.route('/')
+def show_homepage():
+    return render_template('home_page.html')
+
+
+# ************* API Routes ************
+
 @app.route('/api/cupcakes')
 def list_all_cupcakes():
     """
