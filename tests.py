@@ -86,26 +86,60 @@ class CupcakeViewsTestCase(TestCase):
                 }
             })
 
-    def test_create_cupcake(self):
+    def test_update_cupcake(self):
+        """
+        test update flavor
+        return updated JSON
+        {cupcake: {id, flavor, size, rating, image}}
+        && doesnt add a new cupcake to database
+        """
         with app.test_client() as client:
-            url = "/api/cupcakes"
-            resp = client.post(url, json=CUPCAKE_DATA_2)
-
-            self.assertEqual(resp.status_code, 201)
-
-            data = resp.json
-
-            # don't know what ID we'll get, make sure it's an int & normalize
-            self.assertIsInstance(data['cupcake']['id'], int)
-            del data['cupcake']['id']
-
-            self.assertEqual(data, {
-                "cupcake": {
-                    "flavor": "TestFlavor2",
-                    "size": "TestSize2",
-                    "rating": 10,
-                    "image": "http://test.com/cupcake2.jpg"
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.patch(url, json={'cupcake':  {
+                    "flavor": "vanilla",
+                    "size": "TestSize",
+                    "rating": 5,
+                    "image": "http://test.com/cupcake.jpg",
+                    "id" : self.cupcake.id
                 }
             })
 
-            self.assertEqual(Cupcake.query.count(), 2)
+            self.assertEqual(resp.status_code, 200)
+
+            data = resp.json
+
+            self.assertEqual(data, {
+                "cupcake": {
+                    "flavor": "vanilla",
+                    "size": "TestSize",
+                    "rating": 5,
+                    "image": "http://test.com/cupcake.jpg",
+                    "id" : self.cupcake.id
+                }
+            })
+
+            self.assertEqual(Cupcake.query.count(), 1)
+
+
+
+    def test_delete_cupcake(self):
+        """
+        test delete cupcake
+        returns JSON { "message": "Deleted" }
+        and 0 cupcakes in database
+        """
+        with app.test_client() as client:
+            url = f"/api/cupcakes/{self.cupcake.id}"
+
+            resp = client.delete(url)
+
+            self.assertEqual(resp.status_code, 200)
+
+            data = resp.json
+
+            self.assertEqual(data, {
+                "message": "Deleted"
+            })
+
+            self.assertEqual(Cupcake.query.count(), 0)
+

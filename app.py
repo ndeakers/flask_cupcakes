@@ -69,14 +69,15 @@ def create_cupcake():
 def update_cupcake(cupcake_id):
     """update cupcake details
     Input should be {
-  "cupcake": {
-    "flavor": "strawberry",
-    "id": 1,
-    "image": "http://test.com/cupcake.jpg",
-    "rating": 5,
-    "size": "TestSize"
-  }
-}
+    "cupcake": {
+        "flavor": "strawberry",
+        "id": 1,
+        "image": "http://test.com/cupcake.jpg",
+        "rating": 5,
+        "size": "TestSize"
+    }
+    }
+
     Respond with JSON of the newly-updated cupcake, like this: 
     {cupcake: {id, flavor, size, rating, image}}
     """
@@ -94,7 +95,7 @@ def update_cupcake(cupcake_id):
     db.session.commit()
 
     serialized = cupcake.serialize()
-    return (jsonify(cupcake=serialized), 200)
+    return (jsonify(cupcake=serialized))
 
 
 @app.route('/api/cupcakes/<int:cupcake_id>', methods=["DELETE"])
