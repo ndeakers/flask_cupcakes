@@ -48,6 +48,9 @@ def create_cupcake():
     """
     Create cupcake from form data & return it.
 
+    request:
+    {flavor, size, rating, image}
+
     Returns JSON 
     
     {cupcake: {id, flavor, size, rating, image}}.
@@ -56,7 +59,11 @@ def create_cupcake():
     flavor = request.json["flavor"]
     size = request.json["size"]
     rating = request.json["rating"]
-    image = request.json["image"]
+    # image = request.json["image"] OR default
+    if not request.json["image"]:
+        image = 'https://tinyurl.com/demo-cupcake'
+    else:
+        image = request.json["image"]
 
     cupcake = Cupcake(
         flavor=flavor, 

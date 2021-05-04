@@ -86,6 +86,13 @@ class CupcakeViewsTestCase(TestCase):
                 }
             })
 
+        with app.test_client() as client:
+            url = "/api/cupcakes/1000"
+
+            resp = client.get(url)
+
+            self.assertEqual(resp.status_code, 404)
+
     def test_update_cupcake(self):
         """
         test update flavor
@@ -108,6 +115,7 @@ class CupcakeViewsTestCase(TestCase):
 
             data = resp.json
 
+            #Good to test the whole response for security!
             self.assertEqual(data, {
                 "cupcake": {
                     "flavor": "vanilla",
@@ -119,6 +127,20 @@ class CupcakeViewsTestCase(TestCase):
             })
 
             self.assertEqual(Cupcake.query.count(), 1)
+
+        with app.test_client() as client:
+            url = "/api/cupcakes/1000"
+
+            resp = client.patch(url, json={'cupcake':  {
+                    "flavor": "vanilla",
+                    "size": "TestSize",
+                    "rating": 5,
+                    "image": "http://test.com/cupcake.jpg",
+                    "id" : 1000
+                }
+            })
+
+            self.assertEqual(resp.status_code, 404)
 
 
 
@@ -143,3 +165,9 @@ class CupcakeViewsTestCase(TestCase):
 
             self.assertEqual(Cupcake.query.count(), 0)
 
+        with app.test_client() as client:
+            url = "/api/cupcakes/1000"
+
+            resp = client.delete(url)
+
+            self.assertEqual(resp.status_code, 404)

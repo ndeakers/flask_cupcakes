@@ -15,19 +15,20 @@
     <ul id="cupcake_list">
 
     </ul>
-    <form>
+    <form id="add_cupcake_form">
         <div class="mb-3">
             <label for="flavor_input" class="form-label">Flavor</label>
-            <input type="text" class="form-control" id="flavor_input" name="flavor_input">
+            <input type="text" class="form-control" id="flavor_input" name="flavor_input" required>
         </div>
         <div class="mb-3">
             <label for="size_input" class="form-label">Size</label>
-            <input type="text" class="form-control" id="size_input" name="size_input">
+            <input type="text" class="form-control" id="size_input" name="size_input" required>
         </div>
+
 
         <div class="mb-3">
             <label for="rating_input" class="form-label">Rating</label>
-            <select class="form-select" aria-label="Default select example">
+            <select id="rating_input" class="form-select" aria-label="Default select example" required>
                 <option selected>Choose a Rating</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -37,7 +38,7 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="rating_input" class="form-label">Image</label>
+            <label for="image_input" class="form-label">Image</label>
             <input type="url" class="form-control" id="image_input" name="image_input">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
